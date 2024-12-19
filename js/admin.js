@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const tableBody = document.querySelector("#requestsTable tbody");
 
     try {
-        const response = await fetch("request.json");
+        const response = await fetch("server.php", { method: "GET" });
         const requests = await response.json();
 
         // Cek jika data kosong
@@ -31,3 +31,25 @@ document.addEventListener("DOMContentLoaded", async function () {
         tableBody.innerHTML = `<tr><td colspan="4">Failed to load requests.</td></tr>`;
     }
 });
+
+function updateStatus(index, newStatus) {
+    fetch("server.php", {
+        method: "GET"
+    })
+    .then(response => response.json())
+    .then(requests => {
+        requests[index].status = newStatus;
+        return fetch("server.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requests)
+        });
+    })
+    .then(() => {
+        alert("Status updated successfully.");
+        location.reload();
+    })
+    .catch(err => console.error("Error updating status:", err));
+}

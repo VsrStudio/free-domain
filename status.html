@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Subdomain</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        .status-active {
+            color: green;
+        }
+        .status-off {
+            color: red;
+        }
+        .stock {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Status Subdomain</h1>
+        <table id="subdomainTable">
+            <thead>
+                <tr>
+                    <th>Subdomain</th>
+                    <th>Stok</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data akan dimuat menggunakan JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Contoh data subdomain, bisa diganti dengan data yang diambil dari server
+        const subdomains = [
+            { subdomain: "user1.minecraft.pe", stock: 10, status: "active" },
+            { subdomain: "user2.minecraft.id.lv", stock: 0, status: "off" },
+            { subdomain: "user3.minecraftr.us", stock: 5, status: "active" },
+            { subdomain: "user4.justminers.com", stock: 2, status: "off" }
+        ];
+
+        // Fungsi untuk memuat data subdomain ke dalam tabel
+        function loadSubdomains() {
+            const tableBody = document.getElementById('subdomainTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = ''; // Mengosongkan tabel sebelum menambahkan data
+
+            subdomains.forEach(subdomain => {
+                const row = document.createElement('tr');
+
+                // Membuat kolom untuk subdomain
+                const subdomainCell = document.createElement('td');
+                subdomainCell.textContent = subdomain.subdomain;
+                row.appendChild(subdomainCell);
+
+                // Membuat kolom untuk stok
+                const stockCell = document.createElement('td');
+                stockCell.classList.add('stock');
+                stockCell.textContent = subdomain.stock;
+                row.appendChild(stockCell);
+
+                // Membuat kolom untuk status
+                const statusCell = document.createElement('td');
+                const statusText = document.createElement('span');
+                statusText.textContent = subdomain.status === "active" ? "Active" : "Off";
+                statusText.classList.add(subdomain.status === "active" ? 'status-active' : 'status-off');
+                statusCell.appendChild(statusText);
+                row.appendChild(statusCell);
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Panggil fungsi untuk memuat subdomain ketika halaman dimuat
+        window.onload = loadSubdomains;
+    </script>
+</body>
+</html>

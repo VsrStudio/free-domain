@@ -1,35 +1,49 @@
 document.getElementById("subdomainForm").addEventListener("submit", async function (e) {
-    e.preventDefault(); // Menghentikan form untuk melakukan reload
-
+    e.preventDefault(); // Menghentikan reload default form
+    
     const username = document.getElementById("username").value.trim().toLowerCase();
     const domain = document.getElementById("domain").value;
     const email = document.getElementById("email").value.trim();
 
     const fullSubdomain = `${username}.${domain}`;
-
     const responseMessage = document.getElementById("responseMessage");
 
-    // Cek data dengan PHP
-    const response = await fetch("server.php", { method: "GET" });
-    const requests = await response.json();
+    // Debugging: Tambahkan log untuk memeriksa data yang dikirim
+    console.log("Submitting form with: ", fullSubdomain, email);
 
-    const isDuplicate = requests.some(req => req.subdomain === fullSubdomain);
+    try {
+        // Kirim permintaan ke server PHP untuk memeriksa apakah subdomain sudah ada
+        const response = await fetch("server.php", { method: "GET" });
+        const requests = await response.json();
 
-    if (isDuplicate) {
-        responseMessage.textContent = `The subdomain "${fullSubdomain}" is already taken.`;
+        const isDuplicate = requests.some(req => req.subdomain === fullSubdomain);
+
+        if (isDuplicate) {
+            responseMessage.textContent = `The subdomain "${fullSubdomain}" is already taken.`;
+            responseMessage.style.color = "red";
+        } else {
+            // Kirim data baru ke PHP
+            const requestData = { subdomain: fullSubdomain, email: email, status: "processing" };
+            const postResponse = await fetch("server.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            if (postResponse.ok) {
+                responseMessage.textContent = `Your request for "${fullSubdomain}" is being processed.`;
+                responseMessage.style.color = "green";
+            } else {
+                responseMessage.textContent = "Failed to process your request. Please try again.";
+                responseMessage.style.color = "red";
+            }
+        }
+    } catch (error) {
+        // Tangani error jika permintaan gagal
+        console.error("Error submitting the form:", error);
+        responseMessage.textContent = "An error occurred. Please try again later.";
         responseMessage.style.color = "red";
-    } else {
-        // Kirim data baru ke PHP
-        const requestData = { subdomain: fullSubdomain, email: email, status: "processing" };
-        await fetch("server.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(requestData)
-        });
-
-        responseMessage.textContent = `Your request for "${fullSubdomain}" is being processed.`;
-        responseMessage.style.color = "green";
     }
 });

@@ -66,34 +66,32 @@
     </div>
 
     <script>
-        // Contoh data subdomain, bisa diganti dengan data yang diambil dari server
         const subdomains = [
-            { subdomain: "user1.minecraft.pe", stock: 10, status: "active" },
-            { subdomain: "user2.minecraft.id.lv", stock: 0, status: "off" },
-            { subdomain: "user3.minecraftr.us", stock: 5, status: "active" },
-            { subdomain: "user4.justminers.com", stock: 2, status: "off" }
+            { subdomain: "minecraft.pe", stock: 6, status: "active" },
+            { subdomain: "minecraft.id.lv", stock: 9, status: "active" },
+            { subdomain: "minecraftr.us", stock: 7, status: "active" },
+            { subdomain: "justminers.com", stock: 10, status: "active" },
+            { subdomain: "craftleds.com", stock: 10, status: "active" },
+            { subdomain: "gamefan.la", stock: 8, status: "active" },
+            { subdomain: "gamers-online.net", stock: 9, status: "active" }
         ];
 
-        // Fungsi untuk memuat data subdomain ke dalam tabel
         function loadSubdomains() {
             const tableBody = document.getElementById('subdomainTable').getElementsByTagName('tbody')[0];
-            tableBody.innerHTML = ''; // Mengosongkan tabel sebelum menambahkan data
+            tableBody.innerHTML = '';
 
             subdomains.forEach(subdomain => {
                 const row = document.createElement('tr');
 
-                // Membuat kolom untuk subdomain
                 const subdomainCell = document.createElement('td');
                 subdomainCell.textContent = subdomain.subdomain;
                 row.appendChild(subdomainCell);
 
-                // Membuat kolom untuk stok
                 const stockCell = document.createElement('td');
                 stockCell.classList.add('stock');
                 stockCell.textContent = subdomain.stock;
                 row.appendChild(stockCell);
 
-                // Membuat kolom untuk status
                 const statusCell = document.createElement('td');
                 const statusText = document.createElement('span');
                 statusText.textContent = subdomain.status === "active" ? "Active" : "Off";
@@ -105,7 +103,6 @@
             });
         }
 
-        // Panggil fungsi untuk memuat subdomain ketika halaman dimuat
         window.onload = loadSubdomains;
     </script>
 </body>

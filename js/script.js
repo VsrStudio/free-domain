@@ -1,5 +1,5 @@
 document.getElementById("subdomainForm").addEventListener("submit", async function (e) {
-    e.preventDefault(); // Menghentikan reload default form
+    e.preventDefault();
     
     const username = document.getElementById("username").value.trim().toLowerCase();
     const domain = document.getElementById("domain").value;
@@ -8,11 +8,9 @@ document.getElementById("subdomainForm").addEventListener("submit", async functi
     const fullSubdomain = `${username}.${domain}`;
     const responseMessage = document.getElementById("responseMessage");
 
-    // Debugging: Tambahkan log untuk memeriksa data yang dikirim
     console.log("Submitting form with: ", fullSubdomain, email);
 
     try {
-        // Kirim permintaan ke server PHP untuk memeriksa apakah subdomain sudah ada
         const response = await fetch("server.php", { method: "GET" });
         const requests = await response.json();
 
@@ -22,7 +20,6 @@ document.getElementById("subdomainForm").addEventListener("submit", async functi
             responseMessage.textContent = `The subdomain "${fullSubdomain}" is already taken.`;
             responseMessage.style.color = "red";
         } else {
-            // Kirim data baru ke PHP
             const requestData = { subdomain: fullSubdomain, email: email, status: "processing" };
             const postResponse = await fetch("server.php", {
                 method: "POST",
@@ -41,7 +38,6 @@ document.getElementById("subdomainForm").addEventListener("submit", async functi
             }
         }
     } catch (error) {
-        // Tangani error jika permintaan gagal
         console.error("Error submitting the form:", error);
         responseMessage.textContent = "An error occurred. Please try again later.";
         responseMessage.style.color = "red";

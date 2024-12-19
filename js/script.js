@@ -9,27 +9,24 @@ document.getElementById("subdomainForm").addEventListener("submit", async functi
 
     const responseMessage = document.getElementById("responseMessage");
 
-    // Ambil data dari JSON
-    const response = await fetch("request.json");
+    // Cek data dengan PHP
+    const response = await fetch("server.php", { method: "GET" });
     const requests = await response.json();
 
-    // Cek apakah subdomain sudah ada
     const isDuplicate = requests.some(req => req.subdomain === fullSubdomain);
 
     if (isDuplicate) {
         responseMessage.textContent = `The subdomain "${fullSubdomain}" is already taken.`;
         responseMessage.style.color = "red";
     } else {
-        // Tambahkan data baru
-        requests.push({ subdomain: fullSubdomain, email: email, status: "processing" });
-
-        // Simpan kembali ke JSON
-        await fetch("request.json", {
+        // Kirim data baru ke PHP
+        const requestData = { subdomain: fullSubdomain, email: email, status: "processing" };
+        await fetch("server.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(requests)
+            body: JSON.stringify(requestData)
         });
 
         responseMessage.textContent = `Your request for "${fullSubdomain}" is being processed.`;

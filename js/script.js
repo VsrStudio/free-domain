@@ -1,5 +1,5 @@
 document.getElementById("subdomainForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
+    e.preventDefault(); // Menghentikan form untuk melakukan reload
 
     const username = document.getElementById("username").value.trim().toLowerCase();
     const domain = document.getElementById("domain").value;

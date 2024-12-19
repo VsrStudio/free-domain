@@ -5,13 +5,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         const response = await fetch("server.php", { method: "GET" });
         const requests = await response.json();
 
-        // Cek jika data kosong
         if (requests.length === 0) {
             tableBody.innerHTML = `<tr><td colspan="4">No requests found.</td></tr>`;
             return;
         }
 
-        // Loop dan tambahkan data ke tabel
         requests.forEach((request, index) => {
             const row = document.createElement("tr");
 
